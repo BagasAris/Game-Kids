@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:game/app/models/GameScreen.dart';
+
 
 void main() {
   runApp(PlayStore());
 }
 
 class PlayStore extends StatelessWidget {
+  int _selectedIndex = 0;
+
+void _onItemTapped(int index, BuildContext context) {
+  if (index == 1) { // Indeks 1 adalah item "Game"
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => GameScreen()), // Ganti GamePage dengan halaman yang sesuai
+    );
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Play Store'),
+          title: Text('Game Store for Kids'),
+          backgroundColor: Color.fromRGBO(26, 245, 44, 1),
         ),
         body: HomeScreen(),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Beranda',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.gamepad),
+              label: 'Game',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Color.fromRGBO(26, 245, 44, 1),
+          onTap: (index) => _onItemTapped(index, context), // Panggil _onItemTapped dengan BuildContext
+        ),
       ),
     );
   }
@@ -29,16 +57,16 @@ class HomeScreen extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'Cari Game',
               border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.search), // Icon pencarian
+              prefixIcon: Icon(Icons.search),
             ),
           ),
         ),
         Expanded(
           child: ListView(
             children: <Widget>[
-              _buildFeaturedApps(),
-              _buildTopCharts(),
-              _buildCategories(),
+              _buildCategoryCard('Edukasi'),
+              _buildCategoryCard('Balapan'),
+              _buildCategoryCard('Puzzle'),
             ],
           ),
         ),
@@ -46,100 +74,25 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFeaturedApps() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Baru & Terupdate',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          // Tambahkan daftar aplikasi unggulan di sini (gunakan Row)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _buildAppCard('Nama Game 1', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 2', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 3', 'assets/img/01.jpg'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTopCharts() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Pendidikan',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          // Tambahkan daftar aplikasi terpopuler di sini (gunakan Row)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _buildAppCard('Nama Game 4', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 5', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 6', 'assets/img/01.jpg'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategories() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Hiburan',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          // Tambahkan daftar kategori aplikasi di sini (gunakan Row)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _buildAppCard('Nama Game 7', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 8', 'assets/img/01.jpg'),
-              _buildAppCard('Nama Game 9', 'assets/img/01.jpg'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAppCard(String appName, String imagePath) {
+  Widget _buildCategoryCard(String categoryName) {
     return Card(
       elevation: 4.0,
       child: Column(
         children: <Widget>[
-          Image.asset(
-            imagePath,
-            height: 150,
-            width: 150,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 8),
           Text(
-            appName,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            categoryName,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
+          // Tambahkan konten edukasi, balapan, atau puzzle di sini
+          // Ini bisa berupa teks deskripsi atau informasi lainnya
         ],
       ),
     );
   }
 }
+
+
+
+
+
